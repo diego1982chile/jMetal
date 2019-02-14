@@ -29,25 +29,10 @@ public final class Decoder {
                 return ParabolicSARStrategy.buildStrategy(series);
             case 7:
                 return MovingAveragesStrategy.buildStrategy(series);
-
-        }
-
-        throw new IllegalArgumentException("El valor para el parámetro 'locus' no es válido");
-    }
-
-    static Strategy decode(TimeSeries series, int locus, boolean operator) {
-
-        switch (locus) {
-            case 0:
-                return CCICorrectionStrategy.buildStrategy(series);
-            case 1:
-                return GlobalExtremaStrategy.buildStrategy(series);
-            case 2:
-                return MovingMomentumStrategy.buildStrategy(series);
-            case 3:
-                return RSI2Strategy.buildStrategy(series);
-            case 4:
-                return MACDStrategy.buildStrategy(series);
+            case 8:
+                return BagovinoStrategy.buildStrategy(series);
+            case 9:
+                return FXBootCampStrategy.buildStrategy(series);
 
         }
 

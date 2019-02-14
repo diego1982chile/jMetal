@@ -20,7 +20,7 @@ import java.util.*;
 public class StockMarket extends AbstractBinaryProblem {
   // Getting a time series (from any provider: CSV, web service, etc.)
   private TimeSeries series;
-  private static final int NUMBER_OF_STRATEGIES = 8;
+  private static final int NUMBER_OF_STRATEGIES = 10;
 
   /** Constructor */
   /*
@@ -37,7 +37,7 @@ public class StockMarket extends AbstractBinaryProblem {
     setName("StockMarket");
 
     //series = CsvTradesLoader.loadBitstampSeries();
-    series = CsvTicksLoader.load("EURUSD_H1_201801020000_201902111900.csv");
+    series = CsvTicksLoader.load("EURUSD_Daily_201801020000_201812310000.csv");
   }
 
   @Override
@@ -50,7 +50,7 @@ public class StockMarket extends AbstractBinaryProblem {
     //TODO: Ver para que se usa esto
   	return 1;
   }
-   
+
   @Override
   public BinarySolution createSolution() {
     return new DefaultBinarySolution(this) ;
