@@ -37,7 +37,7 @@ public class StockMarket extends AbstractBinaryProblem {
     setName("StockMarket");
 
     //series = CsvTradesLoader.loadBitstampSeries();
-    series = CsvTicksLoader.load("EURUSD_Daily_201801020000_201812310000.csv");
+    series = CsvTicksLoader.load("EURUSD_Daily_201701020000_201712290000.csv");
   }
 
   @Override
