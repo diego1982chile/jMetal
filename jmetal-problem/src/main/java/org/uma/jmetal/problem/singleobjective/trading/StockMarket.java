@@ -21,6 +21,8 @@ public class StockMarket extends AbstractBinaryProblem {
   // Getting a time series (from any provider: CSV, web service, etc.)
   private TimeSeries series;
   private static final int NUMBER_OF_STRATEGIES = 10;
+  private static final int TIME_FRAME = 20;
+  private static final int STEP = 12;
 
   /** Constructor */
   /*
@@ -38,6 +40,17 @@ public class StockMarket extends AbstractBinaryProblem {
 
     //series = CsvTradesLoader.loadBitstampSeries();
     series = CsvTicksLoader.load("EURUSD_Daily_201701020000_201712290000.csv");
+    TimeSeries _series = CsvTicksLoader.load("EURUSD_Daily_201801020000_201812310000.csv");
+    int barNumber = 0;
+    for (Bar bar : _series.getBarData()) {
+      if(barNumber <= TIME_FRAME*STEP) {
+        series.addBar(bar);
+        barNumber++;
+      }
+      else {
+        break;
+      }
+    }
   }
 
   @Override

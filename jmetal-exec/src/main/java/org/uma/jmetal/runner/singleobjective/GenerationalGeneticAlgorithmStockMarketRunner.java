@@ -48,9 +48,9 @@ public class GenerationalGeneticAlgorithmStockMarketRunner {
     selection = new BinaryTournamentSelection<BinarySolution>(new RankingAndCrowdingDistanceComparator<BinarySolution>());
 
     algorithm = new GeneticAlgorithmBuilder<>(problem, crossover, mutation)
-            .setPopulationSize(100)
+            .setPopulationSize(500)
             //.setMaxEvaluations(250000)
-            .setMaxEvaluations(500)
+            .setMaxEvaluations(2000)
             .setSelectionOperator(selection)
             .build() ;
 
