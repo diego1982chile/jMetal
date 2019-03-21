@@ -35,6 +35,8 @@ public final class Decoder {
                 return BagovinoStrategy.buildStrategy(series);
             case 9:
                 return FXBootCampStrategy.buildStrategy(series);
+            case 10:
+                return TunnelStrategy.buildStrategy(series);
 
         }
 
@@ -62,9 +64,21 @@ public final class Decoder {
                 ParabolicSARStrategy.setK(parameters.get(3));
                 ParabolicSARStrategy.setD(parameters.get(4));
                 return ParabolicSARStrategy.buildStrategy(series);
-            case 6:
+            case 1:
+                TunnelStrategy.setPERIOD(parameters.get(0));
+                return TunnelStrategy.buildStrategy(series);
+            case 9:
+                if(parameters.get(1) > parameters.get(0)) {
+                    parameters.set(1, parameters.get(0) - 1);
+                }
+                if(parameters.get(2) > parameters.get(1)) {
+                    parameters.set(2, parameters.get(1) - 1);
+                }
                 if(parameters.get(3) > parameters.get(4)) {
                     parameters.set(3, parameters.get(4) - 1);
+                }
+                if(parameters.get(6) > parameters.get(5)) {
+                    parameters.set(6, parameters.get(5) - 1);
                 }
                 MACDStrategy.setLongEma(parameters.get(0));
                 MACDStrategy.setShortEma(parameters.get(1));
@@ -72,6 +86,9 @@ public final class Decoder {
                 MACDStrategy.setMacd1(parameters.get(3));
                 MACDStrategy.setMacd2(parameters.get(4));
                 MACDStrategy.setSignalEma(parameters.get(5));
+                MACDStrategy.setTpSignalEma(parameters.get(6));
+                MACDStrategy.setATR(parameters.get(7));
+                MACDStrategy.setX(parameters.get(8));
                 return MACDStrategy.buildStrategy(series);
             case 7:
                 StochasticStrategy.setSMA(parameters.get(0));

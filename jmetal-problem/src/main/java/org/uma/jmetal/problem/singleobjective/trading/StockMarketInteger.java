@@ -25,7 +25,7 @@ import java.util.List;
 public class StockMarketInteger extends AbstractIntegerProblem {
   // Getting a time series (from any provider: CSV, web service, etc.)
   private TimeSeries series;
-  private static final int NUMBER_OF_PARAMETERS = 6;
+  private static final int NUMBER_OF_PARAMETERS = 1;
 
   /** Constructor */
   /*
@@ -50,7 +50,7 @@ public class StockMarketInteger extends AbstractIntegerProblem {
     setName("StockMarketInteger");
 
     //series = CsvTradesLoader.loadBitstampSeries();
-    series = CsvTicksLoader.load("test.csv");
+    series = CsvTicksLoader.load("2017_D.csv");
   }
 
 
@@ -82,7 +82,7 @@ public class StockMarketInteger extends AbstractIntegerProblem {
         profit = vsBuyAndHold.calculate(series, tradingRecord);
     }
 
-    System.out.println("Profitable trades ratio: " + profit);
+    System.out.println("Our profit vs buy-and-hold profit: " + profit);
 
     // StockMarket is a maximization problem: multiply by -1 to minimize
     solution.setObjective(0, -1.0 * profit);

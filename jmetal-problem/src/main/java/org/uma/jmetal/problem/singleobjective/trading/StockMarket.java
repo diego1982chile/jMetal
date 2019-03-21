@@ -21,7 +21,7 @@ import java.util.*;
 public class StockMarket extends AbstractBinaryProblem {
   // Getting a time series (from any provider: CSV, web service, etc.)
   private TimeSeries series;
-  private static final int NUMBER_OF_STRATEGIES = 10;
+  private static final int NUMBER_OF_STRATEGIES = 11;
   private static final int TIME_FRAME = 20;
   private static final int STEP = 12;
 
@@ -40,7 +40,7 @@ public class StockMarket extends AbstractBinaryProblem {
     setName("StockMarket");
 
     //series = CsvTradesLoader.loadBitstampSeries();
-    series = CsvTicksLoader.load("test_2.csv");
+    series = CsvTicksLoader.load("2014_D.csv");
     /*
     TimeSeries _series = CsvTicksLoader.load("EURUSD_Daily_201801020000_201812310000.csv");
     int barNumber = 0;
@@ -113,7 +113,7 @@ public class StockMarket extends AbstractBinaryProblem {
         profit = vsBuyAndHold.calculate(series, tradingRecord);
     }
 
-    System.out.println("Profitable trades ratio: " + profit);
+    System.out.println("Our profit vs buy-and-hold profit: " + profit);
 
     // StockMarket is a maximization problem: multiply by -1 to minimize
     solution.setObjective(0, -1.0 * profit);

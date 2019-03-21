@@ -55,7 +55,7 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
     algorithm = new GeneticAlgorithmBuilder<>(problem, crossover, mutation)
             .setPopulationSize(500)
             //.setMaxEvaluations(250000)
-            .setMaxEvaluations(1000)
+            .setMaxEvaluations(5000)
             .setSelectionOperator(selection)
             .build() ;
 
