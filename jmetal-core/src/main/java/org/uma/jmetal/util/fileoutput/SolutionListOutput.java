@@ -6,6 +6,7 @@ import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -19,6 +20,10 @@ public class SolutionListOutput {
   private String separator = "\t";
   private List<? extends Solution<?>> solutionList;
   private List<Boolean> isObjectiveToBeMinimized ;
+
+  private String problem;
+  private int variables;
+  private Timestamp execution;
 
   public SolutionListOutput(List<? extends Solution<?>> solutionList) {
     varFileContext = new DefaultFileOutputContext(varFileName);
@@ -55,6 +60,30 @@ public class SolutionListOutput {
     return this;
   }
 
+  public String getProblem() {
+    return problem;
+  }
+
+  public void setProblem(String problem) {
+    this.problem = problem;
+  }
+
+  public Timestamp getExecution() {
+    return execution;
+  }
+
+  public void setExecution(Timestamp execution) {
+    this.execution = execution;
+  }
+
+  public int getVariables() {
+    return variables;
+  }
+
+  public void setVariables(int variables) {
+    this.variables = variables;
+  }
+
   public void print() {
     if (isObjectiveToBeMinimized == null) {
       printObjectivesToFile(funFileContext, solutionList);
@@ -82,6 +111,30 @@ public class SolutionListOutput {
     } catch (IOException e) {
       throw new JMetalException("Error writing data ", e) ;
     }
+
+  }
+
+  public void printVariablesToFileAndDB(FileOutputContext context, List<? extends Solution<?>> solutionList) {
+    BufferedWriter bufferedWriter = context.getFileWriter();
+
+    try {
+      if (solutionList.size() > 0) {
+        int numberOfVariables = solutionList.get(0).getNumberOfVariables();
+        for (int i = 0; i < solutionList.size(); i++) {
+          for (int j = 0; j < numberOfVariables; j++) {
+            bufferedWriter.write(solutionList.get(i).getVariableValueString(j) + context.getSeparator());
+          }
+          bufferedWriter.newLine();
+        }
+      }
+
+      bufferedWriter.close();
+    } catch (IOException e) {
+      throw new JMetalException("Error writing data ", e) ;
+    }
+
+    //TODO: Registrar ejecución, solución y objetivo en BD
+    Solution
 
   }
 

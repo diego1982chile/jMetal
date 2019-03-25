@@ -50,7 +50,7 @@ public class StockMarketInteger extends AbstractIntegerProblem {
     setName("StockMarketInteger");
 
     //series = CsvTradesLoader.loadBitstampSeries();
-    series = CsvTicksLoader.load("2017_D.csv");
+    series = CsvTicksLoader.load("2013_D.csv");
   }
 
 

@@ -64,7 +64,7 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
 
     IntegerSolution solution = algorithm.getResult() ;
     List<IntegerSolution> population = new ArrayList<>(1) ;
-    population.add(solution) ;
+    population.add(solution);
 
     long computingTime = algorithmRunner.getComputingTime() ;
 
