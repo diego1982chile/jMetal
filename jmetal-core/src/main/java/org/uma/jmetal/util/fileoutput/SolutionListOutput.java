@@ -1,5 +1,11 @@
 package org.uma.jmetal.util.fileoutput;
 
+import cl.dsoto.trading.cdi.ServiceLocator;
+import cl.dsoto.trading.components.OptimizationManager;
+import cl.dsoto.trading.components.ProblemManager;
+import cl.dsoto.trading.model.Objective;
+import cl.dsoto.trading.model.Optimization;
+import cl.dsoto.trading.model.Problem;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
@@ -7,6 +13,7 @@ import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,10 +27,6 @@ public class SolutionListOutput {
   private String separator = "\t";
   private List<? extends Solution<?>> solutionList;
   private List<Boolean> isObjectiveToBeMinimized ;
-
-  private String problem;
-  private int variables;
-  private Timestamp execution;
 
   public SolutionListOutput(List<? extends Solution<?>> solutionList) {
     varFileContext = new DefaultFileOutputContext(varFileName);
@@ -58,30 +61,6 @@ public class SolutionListOutput {
     funFileContext.setSeparator(this.separator);
 
     return this;
-  }
-
-  public String getProblem() {
-    return problem;
-  }
-
-  public void setProblem(String problem) {
-    this.problem = problem;
-  }
-
-  public Timestamp getExecution() {
-    return execution;
-  }
-
-  public void setExecution(Timestamp execution) {
-    this.execution = execution;
-  }
-
-  public int getVariables() {
-    return variables;
-  }
-
-  public void setVariables(int variables) {
-    this.variables = variables;
   }
 
   public void print() {
@@ -132,10 +111,6 @@ public class SolutionListOutput {
     } catch (IOException e) {
       throw new JMetalException("Error writing data ", e) ;
     }
-
-    //TODO: Registrar ejecución, solución y objetivo en BD
-    Solution
-
   }
 
   public void printObjectivesToFile(FileOutputContext context, List<? extends Solution<?>> solutionList) {
@@ -201,5 +176,6 @@ public class SolutionListOutput {
   public void printVariablesToFile(String fileName) throws IOException {
     printVariablesToFile(new DefaultFileOutputContext(fileName), solutionList);
   }
+
 
 }

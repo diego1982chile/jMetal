@@ -1,5 +1,10 @@
 package org.uma.jmetal.runner.singleobjective;
 
+import cl.dsoto.trading.cdi.ServiceLocator;
+import cl.dsoto.trading.components.ProblemManager;
+import cl.dsoto.trading.model.Objective;
+import cl.dsoto.trading.model.Optimization;
+import cl.dsoto.trading.model.Problem;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.singleobjective.geneticalgorithm.GeneticAlgorithmBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -16,12 +21,14 @@ import org.uma.jmetal.problem.singleobjective.trading.StockMarket;
 import org.uma.jmetal.problem.singleobjective.trading.StockMarketInteger;
 import org.uma.jmetal.solution.BinarySolution;
 import org.uma.jmetal.solution.IntegerSolution;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +38,21 @@ import java.util.List;
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
 public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
+
+  String name;
+  String file;
+  int parameters;
+
+  public GenerationalGeneticAlgorithmStockMarketIntegerRunner(String name, String file, int parameters) {
+    this.name = name;
+    this.file = file;
+    this.parameters = parameters;
+  }
+
   /**
    * Usage: java org.uma.jmetal.runner.singleobjective.BinaryGenerationalGeneticAlgorithmRunner
    */
-  public static void main(String[] args) throws Exception {
+  public Optimization run() throws Exception {
 
     IntegerProblem problem;
     Algorithm<IntegerSolution> algorithm;
@@ -43,7 +61,7 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
     SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
 
     //problem = new TSP("/tspInstances/kroA100.tsp");
-    problem = new StockMarketInteger();
+    problem = new StockMarketInteger(name, file, parameters);
 
     crossover = new IntegerSBXCrossover(0.9, 20.0) ;
 
@@ -77,6 +95,29 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
     JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
     JMetalLogger.logger.info("Objectives values have been written to file FUN.tsv");
     JMetalLogger.logger.info("Variables values have been written to file VAR.tsv");
+
+    //Devolver una instancia de Optimization
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    List<Objective> objectives = new ArrayList<>();
+    List<cl.dsoto.trading.model.Solution> solutions = new ArrayList<>();
+
+    ProblemManager problemManager = (ProblemManager) ServiceLocator.getInstance().getService(ProblemManager.class);
+    Problem prob = problemManager.getByName(problem.getName());
+
+    Optimization optimization = new Optimization(prob, timestamp, objectives, solutions);
+
+    for (Solution<?> sol : population) {
+      objectives.add(new Objective(optimization, sol.getObjective(0)));
+    }
+
+    for (Solution<?> sol : population) {
+      solutions.add(new cl.dsoto.trading.model.Solution(optimization, sol.getVariables()));
+    }
+
+    optimization.setObjectives(objectives);
+    optimization.setSolutions(solutions);
+
+    return optimization;
 
   }
 }

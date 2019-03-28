@@ -3,18 +3,12 @@ package org.uma.jmetal.problem.singleobjective.trading;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.analysis.criteria.VersusBuyAndHoldCriterion;
-import org.uma.jmetal.problem.impl.AbstractBinaryProblem;
 import org.uma.jmetal.problem.impl.AbstractIntegerProblem;
-import org.uma.jmetal.solution.BinarySolution;
 import org.uma.jmetal.solution.IntegerSolution;
-import org.uma.jmetal.solution.impl.DefaultBinarySolution;
 import ta4jexamples.loaders.CsvTicksLoader;
 import ta4jexamples.research.MultipleStrategy;
-import ta4jexamples.strategies.BagovinoStrategy;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
 import java.util.List;
 
 /**
@@ -25,32 +19,35 @@ import java.util.List;
 public class StockMarketInteger extends AbstractIntegerProblem {
   // Getting a time series (from any provider: CSV, web service, etc.)
   private TimeSeries series;
-  private static final int NUMBER_OF_PARAMETERS = 1;
+  private String file;
 
   /** Constructor */
-  /*
-  public StockMarket() {
-    this(256);
-  }
-  */
-
-  /** Constructor */
-  public StockMarketInteger() {
+  public StockMarketInteger(String name, String file, int parameters) {
     // Number of variables is the number of strategies at hand
-    setNumberOfVariables(NUMBER_OF_PARAMETERS);
+    setNumberOfVariables(parameters);
     setNumberOfObjectives(1);
     List<Integer> lowerLimits = new ArrayList<>();
+
     List<Integer> upperLimits = new ArrayList<>();
-    for(int i = 0; i < NUMBER_OF_PARAMETERS; i++) {
+    for(int i = 0; i < parameters; i++) {
       lowerLimits.add(1);
       upperLimits.add(200);
     }
     setLowerLimit(lowerLimits);
     setUpperLimit(upperLimits);
-    setName("StockMarketInteger");
+    setName(name);
 
     //series = CsvTradesLoader.loadBitstampSeries();
-    series = CsvTicksLoader.load("2013_D.csv");
+    series = CsvTicksLoader.load(file);
+  }
+
+
+  public String getFile() {
+    return file;
+  }
+
+  public void setFile(String file) {
+    this.file = file;
   }
 
 
@@ -63,7 +60,10 @@ public class StockMarketInteger extends AbstractIntegerProblem {
 
     List<Strategy> strategies = new ArrayList<>();
 
-    strategies.add(Decoder.decode(series, solution.getVariables()));
+    Strategy strategy = Decoder.decode(series, getName(), solution.getVariables());
+    setName(strategy.getName());
+
+    strategies.add(strategy);
 
     MultipleStrategy multipleStrategy = new MultipleStrategy(strategies);
 
