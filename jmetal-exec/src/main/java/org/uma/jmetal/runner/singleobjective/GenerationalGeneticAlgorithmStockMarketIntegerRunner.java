@@ -1,10 +1,10 @@
 package org.uma.jmetal.runner.singleobjective;
 
 import cl.dsoto.trading.cdi.ServiceLocator;
-import cl.dsoto.trading.components.ProblemManager;
+import cl.dsoto.trading.components.StrategyManager;
 import cl.dsoto.trading.model.Objective;
 import cl.dsoto.trading.model.Optimization;
-import cl.dsoto.trading.model.Problem;
+import cl.dsoto.trading.model.Strategy;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.singleobjective.geneticalgorithm.GeneticAlgorithmBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -73,7 +73,7 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
     algorithm = new GeneticAlgorithmBuilder<>(problem, crossover, mutation)
             .setPopulationSize(500)
             //.setMaxEvaluations(250000)
-            .setMaxEvaluations(5000)
+            .setMaxEvaluations(1000)
             .setSelectionOperator(selection)
             .build() ;
 
@@ -101,10 +101,10 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
     List<Objective> objectives = new ArrayList<>();
     List<cl.dsoto.trading.model.Solution> solutions = new ArrayList<>();
 
-    ProblemManager problemManager = (ProblemManager) ServiceLocator.getInstance().getService(ProblemManager.class);
-    Problem prob = problemManager.getByName(problem.getName());
+    StrategyManager strategyManager = (StrategyManager) ServiceLocator.getInstance().getService(StrategyManager.class);
+    Strategy strategy = strategyManager.getByName(problem.getName());
 
-    Optimization optimization = new Optimization(prob, timestamp, objectives, solutions);
+    Optimization optimization = new Optimization(null, strategy, timestamp, objectives, solutions);
 
     for (Solution<?> sol : population) {
       objectives.add(new Objective(optimization, sol.getObjective(0)));
