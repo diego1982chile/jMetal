@@ -118,6 +118,57 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
     optimization.setSolutions(solutions);
 
     return optimization;
+  }
+
+  public static void main(String[] args) throws Exception {
+
+    String NAME = "GlobalExtremaStrategy";
+    String FILE = "2012_D.csv";
+    int PARAMETERS = 1;
+
+    IntegerProblem problem;
+    Algorithm<IntegerSolution> algorithm;
+    CrossoverOperator<IntegerSolution> crossover;
+    MutationOperator<IntegerSolution> mutation;
+    SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
+
+
+    //problem = new TSP("/tspInstances/kroA100.tsp");
+    problem = new StockMarketInteger(NAME, FILE, PARAMETERS);
+
+    crossover = new IntegerSBXCrossover(0.9, 20.0) ;
+
+    double mutationProbability = 1.0 / problem.getNumberOfVariables() ;
+    mutation = new IntegerPolynomialMutation(mutationProbability, 20.0) ;
+
+    selection = new BinaryTournamentSelection<IntegerSolution>(new RankingAndCrowdingDistanceComparator<IntegerSolution>());
+
+    algorithm = new GeneticAlgorithmBuilder<>(problem, crossover, mutation)
+            .setPopulationSize(500)
+            //.setMaxEvaluations(250000)
+            .setMaxEvaluations(5000)
+            .setSelectionOperator(selection)
+            .build() ;
+
+    AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
+            .execute() ;
+
+    IntegerSolution solution = algorithm.getResult() ;
+    List<IntegerSolution> population = new ArrayList<>(1) ;
+    population.add(solution) ;
+
+    long computingTime = algorithmRunner.getComputingTime() ;
+
+    new SolutionListOutput(population)
+            .setSeparator("\t")
+            .setVarFileOutputContext(new DefaultFileOutputContext("VAR.tsv"))
+            .setFunFileOutputContext(new DefaultFileOutputContext("FUN.tsv"))
+            .print();
+
+    JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
+    JMetalLogger.logger.info("Objectives values have been written to file FUN.tsv");
+    JMetalLogger.logger.info("Variables values have been written to file VAR.tsv");
 
   }
+
 }
