@@ -36,6 +36,17 @@ public class StockMarket extends AbstractBinaryProblem {
     series = CsvTicksLoader.load(file);
   }
 
+  /** Constructor */
+  public StockMarket(String name, TimeSeries series, int strategies) {
+    // Number of variables is the number of strategies at hand
+    setNumberOfVariables(strategies);
+    setNumberOfObjectives(1);
+    setName(name);
+
+    //series = CsvTradesLoader.loadBitstampSeries();
+    this.series = series;
+  }
+
   @Override
   protected int getBitsPerVariable(int index) {
     /*

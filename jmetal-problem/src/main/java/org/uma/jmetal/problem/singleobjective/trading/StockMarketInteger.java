@@ -41,6 +41,26 @@ public class StockMarketInteger extends AbstractIntegerProblem {
     series = CsvTicksLoader.load(file);
   }
 
+  /** Constructor */
+  public StockMarketInteger(String name, TimeSeries series, int parameters) {
+    // Number of variables is the number of strategies at hand
+    setNumberOfVariables(parameters);
+    setNumberOfObjectives(1);
+    List<Integer> lowerLimits = new ArrayList<>();
+
+    List<Integer> upperLimits = new ArrayList<>();
+    for(int i = 0; i < parameters; i++) {
+      lowerLimits.add(1);
+      upperLimits.add(200);
+    }
+    setLowerLimit(lowerLimits);
+    setUpperLimit(upperLimits);
+    setName(name);
+
+    //series = CsvTradesLoader.loadBitstampSeries();
+    this.series = series;
+  }
+
 
   public String getFile() {
     return file;

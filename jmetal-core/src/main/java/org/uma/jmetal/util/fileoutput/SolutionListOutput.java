@@ -1,17 +1,11 @@
 package org.uma.jmetal.util.fileoutput;
 
-import cl.dsoto.trading.cdi.ServiceLocator;
-import cl.dsoto.trading.components.OptimizationManager;
-import cl.dsoto.trading.model.Objective;
-import cl.dsoto.trading.model.Optimization;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

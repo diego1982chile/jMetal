@@ -1,10 +1,11 @@
 package org.uma.jmetal.runner.singleobjective;
 
-import cl.dsoto.trading.cdi.ServiceLocator;
+import cl.dsoto.trading.clients.ServiceLocator;
 import cl.dsoto.trading.components.StrategyManager;
 import cl.dsoto.trading.model.Objective;
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Strategy;
+import org.ta4j.core.TimeSeries;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.singleobjective.geneticalgorithm.GeneticAlgorithmBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -41,6 +42,7 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
 
   String name;
   String file;
+  TimeSeries series;
   int parameters;
 
   public GenerationalGeneticAlgorithmStockMarketIntegerRunner(String name, String file, int parameters) {
@@ -49,19 +51,32 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
     this.parameters = parameters;
   }
 
+  public GenerationalGeneticAlgorithmStockMarketIntegerRunner(String name, TimeSeries series, int parameters) {
+    this.name = name;
+    this.series = series;
+    this.parameters = parameters;
+  }
+
   /**
    * Usage: java org.uma.jmetal.runner.singleobjective.BinaryGenerationalGeneticAlgorithmRunner
    */
   public Optimization run() throws Exception {
 
-    IntegerProblem problem;
+    IntegerProblem problem = null;
     Algorithm<IntegerSolution> algorithm;
     CrossoverOperator<IntegerSolution> crossover;
     MutationOperator<IntegerSolution> mutation;
     SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
 
-    //problem = new TSP("/tspInstances/kroA100.tsp");
-    problem = new StockMarketInteger(name, file, parameters);
+    if(file != null && series == null) {
+      problem = new StockMarketInteger(name, file, parameters);
+    }
+    if(series != null && file == null) {
+      problem = new StockMarketInteger(name, series, parameters);
+    }
+    if(series == null && file == null) {
+      throw new Exception("Se debe setear el nombre del archivo o la serie");
+    }
 
     crossover = new IntegerSBXCrossover(0.9, 20.0) ;
 

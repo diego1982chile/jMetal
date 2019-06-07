@@ -1,10 +1,11 @@
 package org.uma.jmetal.runner.singleobjective;
 
-import cl.dsoto.trading.cdi.ServiceLocator;
+import cl.dsoto.trading.clients.ServiceLocator;
 import cl.dsoto.trading.components.StrategyManager;
 import cl.dsoto.trading.model.Objective;
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Strategy;
+import org.ta4j.core.TimeSeries;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.singleobjective.geneticalgorithm.GeneticAlgorithmBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -36,6 +37,7 @@ public class GenerationalGeneticAlgorithmStockMarketRunner {
 
   String name;
   String file;
+  TimeSeries series;
   int parameters;
 
   public GenerationalGeneticAlgorithmStockMarketRunner(String name, String file, int parameters) {
@@ -43,19 +45,34 @@ public class GenerationalGeneticAlgorithmStockMarketRunner {
     this.file = file;
     this.parameters = parameters;
   }
+
+  public GenerationalGeneticAlgorithmStockMarketRunner(String name, TimeSeries series, int parameters) {
+    this.name = name;
+    this.series = series;
+    this.parameters = parameters;
+  }
+
   /**
    * Usage: java org.uma.jmetal.runner.singleobjective.BinaryGenerationalGeneticAlgorithmRunner
    */
   public Optimization run() throws Exception {
 
-    BinaryProblem problem;
+    BinaryProblem problem = null;
     Algorithm<BinarySolution> algorithm;
     CrossoverOperator<BinarySolution> crossover;
     MutationOperator<BinarySolution> mutation;
     SelectionOperator<List<BinarySolution>, BinarySolution> selection;
 
     //problem = new TSP("/tspInstances/kroA100.tsp");
-    problem = new StockMarket(name, file, parameters);
+    if(file != null && series == null) {
+      problem = new StockMarket(name, file, parameters);
+    }
+    if(series != null && file == null) {
+      problem = new StockMarket(name, series, parameters);
+    }
+    if(series == null && file == null) {
+      throw new Exception("Se debe setear el nombre del archivo o la serie");
+    }
 
     crossover = new SinglePointCrossover(0.9) ;
 
