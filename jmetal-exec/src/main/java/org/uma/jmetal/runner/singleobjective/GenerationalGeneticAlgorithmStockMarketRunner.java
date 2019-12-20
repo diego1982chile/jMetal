@@ -55,7 +55,7 @@ public class GenerationalGeneticAlgorithmStockMarketRunner {
   /**
    * Usage: java org.uma.jmetal.runner.singleobjective.BinaryGenerationalGeneticAlgorithmRunner
    */
-  public Optimization run() throws Exception {
+  public Optimization run(Strategy strategy) throws Exception {
 
     BinaryProblem problem = null;
     Algorithm<BinarySolution> algorithm;
@@ -112,10 +112,7 @@ public class GenerationalGeneticAlgorithmStockMarketRunner {
     List<Objective> objectives = new ArrayList<>();
     List<cl.dsoto.trading.model.Solution> solutions = new ArrayList<>();
 
-    StrategyManager problemManager = (StrategyManager) ServiceLocator.getInstance().getService(StrategyManager.class);
-    Strategy prob = problemManager.getByName(problem.getName());
-
-    Optimization optimization = new Optimization(null, prob, timestamp, objectives, solutions);
+    Optimization optimization = new Optimization(null, strategy, timestamp, objectives, solutions);
 
     for (Solution<?> sol : population) {
       objectives.add(new Objective(optimization, sol.getObjective(0)));

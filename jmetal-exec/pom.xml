@@ -74,5 +74,10 @@
             <artifactId>xchart</artifactId>
             <version>3.2.2</version>
         </dependency>
+        <dependency>
+            <groupId>cl.dsoto</groupId>
+            <artifactId>TradingDomain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

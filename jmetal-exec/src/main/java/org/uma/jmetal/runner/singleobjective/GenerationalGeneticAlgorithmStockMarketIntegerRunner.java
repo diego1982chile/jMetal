@@ -60,7 +60,7 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
   /**
    * Usage: java org.uma.jmetal.runner.singleobjective.BinaryGenerationalGeneticAlgorithmRunner
    */
-  public Optimization run() throws Exception {
+  public Optimization run(Strategy strategy) throws Exception {
 
     IntegerProblem problem = null;
     Algorithm<IntegerSolution> algorithm;
@@ -116,8 +116,8 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
     List<Objective> objectives = new ArrayList<>();
     List<cl.dsoto.trading.model.Solution> solutions = new ArrayList<>();
 
-    StrategyManager strategyManager = (StrategyManager) ServiceLocator.getInstance().getService(StrategyManager.class);
-    Strategy strategy = strategyManager.getByName(problem.getName());
+    //StrategyManager strategyManager = (StrategyManager) ServiceLocator.getInstance().getService(StrategyManager.class);
+    //Strategy strategy = strategyManager.getByName(problem.getName());
 
     Optimization optimization = new Optimization(null, strategy, timestamp, objectives, solutions);
 
@@ -141,6 +141,11 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
     String FILE = "2012_D.csv";
     int PARAMETERS = 1;
 
+    StrategyManager strategyManager = (StrategyManager) ServiceLocator.getInstance().getService(StrategyManager.class);
+
+    List<Strategy> strategies = strategyManager.getIntegerProblemTypeStrategies();
+
+    /*
     IntegerProblem problem;
     Algorithm<IntegerSolution> algorithm;
     CrossoverOperator<IntegerSolution> crossover;
@@ -183,7 +188,7 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
     JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
     JMetalLogger.logger.info("Objectives values have been written to file FUN.tsv");
     JMetalLogger.logger.info("Variables values have been written to file VAR.tsv");
-
+    */
   }
 
 }
