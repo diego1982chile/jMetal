@@ -8,6 +8,7 @@ import org.uma.jmetal.problem.impl.AbstractBinaryProblem;
 import org.uma.jmetal.solution.BinarySolution;
 import org.uma.jmetal.solution.impl.DefaultBinarySolution;
 import org.uma.jmetal.util.JMetalException;
+import ta4jexamples.loaders.CsvTicksLoader;
 import ta4jexamples.research.*;
 
 import java.util.*;
@@ -20,37 +21,30 @@ import java.util.*;
 public class StockMarket extends AbstractBinaryProblem {
   // Getting a time series (from any provider: CSV, web service, etc.)
   private TimeSeries series;
-  private static final int NUMBER_OF_STRATEGIES = 10;
-  private static final int TIME_FRAME = 20;
-  private static final int STEP = 12;
+  private String file;
+  private int strategies;
+
 
   /** Constructor */
-  /*
-  public StockMarket() {
-    this(256);
-  }
-  */
-
-  /** Constructor */
-  public StockMarket() {
+  public StockMarket(String name, String file, int strategies) {
     // Number of variables is the number of strategies at hand
-    setNumberOfVariables(NUMBER_OF_STRATEGIES);
+    setNumberOfVariables(strategies);
     setNumberOfObjectives(1);
-    setName("StockMarket");
+    setName(name);
 
     //series = CsvTradesLoader.loadBitstampSeries();
-    series = CsvTicksLoader.load("EURUSD_Daily_201701020000_201712290000.csv");
-    TimeSeries _series = CsvTicksLoader.load("EURUSD_Daily_201801020000_201812310000.csv");
-    int barNumber = 0;
-    for (Bar bar : _series.getBarData()) {
-      if(barNumber <= TIME_FRAME*STEP) {
-        series.addBar(bar);
-        barNumber++;
-      }
-      else {
-        break;
-      }
-    }
+    series = CsvTicksLoader.load(file);
+  }
+
+  /** Constructor */
+  public StockMarket(String name, TimeSeries series, int strategies) {
+    // Number of variables is the number of strategies at hand
+    setNumberOfVariables(strategies);
+    setNumberOfObjectives(1);
+    setName(name);
+
+    //series = CsvTradesLoader.loadBitstampSeries();
+    this.series = series;
   }
 
   @Override
@@ -110,7 +104,7 @@ public class StockMarket extends AbstractBinaryProblem {
         profit = vsBuyAndHold.calculate(series, tradingRecord);
     }
 
-    System.out.println("Profitable trades ratio: " + profit);
+    System.out.println("Our profit vs buy-and-hold profit: " + profit);
 
     // StockMarket is a maximization problem: multiply by -1 to minimize
     solution.setObjective(0, -1.0 * profit);

@@ -85,6 +85,26 @@ public class SolutionListOutput {
 
   }
 
+  public void printVariablesToFileAndDB(FileOutputContext context, List<? extends Solution<?>> solutionList) {
+    BufferedWriter bufferedWriter = context.getFileWriter();
+
+    try {
+      if (solutionList.size() > 0) {
+        int numberOfVariables = solutionList.get(0).getNumberOfVariables();
+        for (int i = 0; i < solutionList.size(); i++) {
+          for (int j = 0; j < numberOfVariables; j++) {
+            bufferedWriter.write(solutionList.get(i).getVariableValueString(j) + context.getSeparator());
+          }
+          bufferedWriter.newLine();
+        }
+      }
+
+      bufferedWriter.close();
+    } catch (IOException e) {
+      throw new JMetalException("Error writing data ", e) ;
+    }
+  }
+
   public void printObjectivesToFile(FileOutputContext context, List<? extends Solution<?>> solutionList) {
     BufferedWriter bufferedWriter = context.getFileWriter();
 
@@ -148,5 +168,6 @@ public class SolutionListOutput {
   public void printVariablesToFile(String fileName) throws IOException {
     printVariablesToFile(new DefaultFileOutputContext(fileName), solutionList);
   }
+
 
 }
