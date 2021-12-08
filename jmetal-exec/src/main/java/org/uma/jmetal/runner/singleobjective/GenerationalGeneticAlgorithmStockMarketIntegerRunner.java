@@ -4,6 +4,7 @@ import cl.dsoto.trading.clients.ServiceLocator;
 import cl.dsoto.trading.components.StrategyManager;
 import cl.dsoto.trading.model.Objective;
 import cl.dsoto.trading.model.Optimization;
+
 import cl.dsoto.trading.model.Strategy;
 import org.ta4j.core.TimeSeries;
 import org.uma.jmetal.algorithm.Algorithm;
@@ -107,9 +108,9 @@ public class GenerationalGeneticAlgorithmStockMarketIntegerRunner {
             .setFunFileOutputContext(new DefaultFileOutputContext("FUN.tsv"))
             .print();
 
-    JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
-    JMetalLogger.logger.info("Objectives values have been written to file FUN.tsv");
-    JMetalLogger.logger.info("Variables values have been written to file VAR.tsv");
+    //JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
+    //JMetalLogger.logger.info("Objectives values have been written to file FUN.tsv");
+    //JMetalLogger.logger.info("Variables values have been written to file VAR.tsv");
 
     //Devolver una instancia de Optimization
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());

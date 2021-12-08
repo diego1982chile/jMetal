@@ -12,6 +12,7 @@ import org.uma.jmetal.util.JMetalException;
  */
 @SuppressWarnings("serial")
 public class OneMax extends AbstractBinaryProblem {
+
 	private int bits ;
 	
   /** Constructor */

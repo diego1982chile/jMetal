@@ -195,9 +195,9 @@ public final class Decoder {
                 MACDStrategy.setMacd1(parameters.get(3));
                 MACDStrategy.setMacd2(parameters.get(4));
                 MACDStrategy.setSignalEma(parameters.get(5));
-                MACDStrategy.setTpSignalEma(parameters.get(6));
-                MACDStrategy.setATR(parameters.get(7));
-                MACDStrategy.setX(parameters.get(8));
+                //MACDStrategy.setTpSignalEma(parameters.get(6));
+                //MACDStrategy.setATR(parameters.get(7));
+                //MACDStrategy.setX(parameters.get(8));
                 return MACDStrategy.buildStrategy(series);
             case "FXBootCampStrategy":
                 if(parameters.get(5) > parameters.get(6)) {
