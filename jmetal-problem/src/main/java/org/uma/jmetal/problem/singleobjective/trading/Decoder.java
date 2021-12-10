@@ -92,18 +92,20 @@ public final class Decoder {
                 if(parameters.get(3) > parameters.get(4)) {
                     parameters.set(3, parameters.get(4) - 1);
                 }
+                /*
                 if(parameters.get(6) > parameters.get(5)) {
                     parameters.set(6, parameters.get(5) - 1);
                 }
+                */
                 MACDStrategy.setLongEma(parameters.get(0));
                 MACDStrategy.setShortEma(parameters.get(1));
                 MACDStrategy.setShorterEma(parameters.get(2));
                 MACDStrategy.setMacd1(parameters.get(3));
                 MACDStrategy.setMacd2(parameters.get(4));
                 MACDStrategy.setSignalEma(parameters.get(5));
-                MACDStrategy.setTpSignalEma(parameters.get(6));
-                MACDStrategy.setATR(parameters.get(7));
-                MACDStrategy.setX(parameters.get(8));
+                //MACDStrategy.setTpSignalEma(parameters.get(6));
+                //MACDStrategy.setATR(parameters.get(7));
+                //MACDStrategy.setX(parameters.get(8));
                 return MACDStrategy.buildStrategy(series);
             case 10:
                 return FXBootCampStrategy.buildStrategy(series);
@@ -186,9 +188,11 @@ public final class Decoder {
                 if(parameters.get(3) > parameters.get(4)) {
                     parameters.set(3, parameters.get(4) - 1);
                 }
+                /*
                 if(parameters.get(6) > parameters.get(5)) {
                     parameters.set(6, parameters.get(5) - 1);
                 }
+                */
                 MACDStrategy.setLongEma(parameters.get(0));
                 MACDStrategy.setShortEma(parameters.get(1));
                 MACDStrategy.setShorterEma(parameters.get(2));
